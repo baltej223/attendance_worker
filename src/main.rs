@@ -1,9 +1,12 @@
-use dotenvy::dotenv;
 #[allow(unused_imports)]
-use reqwest::Client;
+use dotenvy::dotenv;
+
+use crate::seri::Attendance;
+// use reqwest::Client;
 
 mod database;
 mod seri;
+mod time;
 
 #[derive(Debug)]
 enum ErrHandler {
@@ -26,6 +29,7 @@ impl From<mongodb::error::Error> for ErrHandler {
 #[tokio::main]
 async fn main() -> Result<(), ErrHandler> {
     dotenv().ok();
+
     // let client = Client::new();
     //
     // let response = client
@@ -38,9 +42,20 @@ async fn main() -> Result<(), ErrHandler> {
     // println!("{}", body);
     // database::connect().await?;
 
-    let users: Vec<seri::User> = database::fetch_users().await.unwrap();
-    for user in users {
-        println!("{:?}", user);
+    // let users: Vec<seri::User> = database::fetch_users().await.unwrap();
+    // for user in users {
+    //     println!("{:?}", user);
+    // }
+
+    // let (time, _): (std::time::Duration, std::time::SystemTime) = time::get_time();
+    // println!("{:?}", time);
+
+    let attendances = database::get_current_attendances().await?;
+    println!("{}", attendances.len());
+
+    for atten in attendances {
+        println!("nrje");
+        println!("{:?}", atten);
     }
 
     Ok(())

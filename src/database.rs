@@ -1,7 +1,5 @@
-use crate::seri::User;
-use futures_util::stream::TryStreamExt;
-// use mongodb::bson::doc;
-use mongodb::{Client, Collection, Database};
+use futures_util::TryStreamExt;
+use mongodb::{Client, Collection, Database, bson::doc};
 use std::env;
 
 pub async fn connect() -> Result<Database, mongodb::error::Error> {
@@ -9,23 +7,42 @@ pub async fn connect() -> Result<Database, mongodb::error::Error> {
     let client = Client::with_uri_str(mongo_uri).await?;
     let db_name = env::var("DATABASE_NAME").expect("The DATABASE_NAME environment var not found!");
     let db = client.database(&db_name);
-    // let collection = db.collection::<crate::seri::Job>("jobs");
     println!("Mongo ready");
     Ok(db)
 }
 
-pub async fn fetch_users() -> Result<Vec<User>, mongodb::error::Error> {
+// pub async fn fetch_users() -> Result<Vec<User>, mongodb::error::Error> {
+//     let db = connect().await?;
+//
+//     let collection: Collection<User> = db.collection("users");
+//
+//     let mut cursor = collection.find(None, None).await?;
+//     let mut users: Vec<User> = Vec::new();
+//     while let Some(user) = cursor.try_next().await? {
+//         users.push(user);
+//     }
+//
+//     Ok(users)
+// }
+//
+
+pub async fn get_current_attendances() -> Result<Vec<crate::seri::Attendance>, mongodb::error::Error>
+{
     let db = connect().await?;
+    let collection = db.collection::<crate::seri::Attendance>("attendances");
 
-    let collection: Collection<User> = db.collection("users");
+    let current_time = String::from("9:20"); // crate::time::get_current_time_hhmm();
 
-    let mut cursor = collection.find(None, None).await?;
+    let filter = doc! {
+        "time": &current_time
+    };
 
-    let mut users: Vec<User> = Vec::new();
+    let mut cursor = collection.find(filter, None).await?;
 
-    while let Some(user) = cursor.try_next().await? {
-        users.push(user);
+    let mut attendances = Vec::new();
+    while let Some(attendance) = cursor.try_next().await? {
+        attendances.push(attendance);
     }
 
-    Ok(users)
+    Ok(attendances)
 }

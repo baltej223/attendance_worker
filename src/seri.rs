@@ -1,24 +1,67 @@
-use serde::Deserialize;
+// use mongodb::bson::{DateTime, oid::ObjectId};
+use serde::{Deserialize, Serialize};
 // use std::collections::HashMap;
 //
-// #[derive(Debug, Deserialize, Serialize)]
-// pub struct Job {
-//     #[serde(rename = "_id")]
-//     id: mongodb::bson::oid::ObjectId,
-//
-//     form_url: String,
-//
-//     fields: HashMap<String, String>,
-//
-//     submit_at: mongodb::bson::DateTime,
-//
-//     status: String,
+// #[derive(Debug, Serialize, Deserialize)]
+// pub enum HttpMethod {
+//     Get,
+//     Post,
+//     Put,
+//     Delete,
 // }
 //
+// #[derive(Debug, Serialize, Deserialize)]
+// pub enum JobStatus {
+//     Pending,
+//     Running,
+//     Success,
+//     Failed,
+// }
+
+// #[derive(Debug, Serialize, Deserialize)]
+// pub struct Job {
+//     #[serde(rename = "_id")]
+//     pub id: ObjectId,
+//     pub http_url: String,
+//     pub run_at: DateTime,
+//     /// When the job actually ran (None if not yet executed)
+//     pub executed_at: Option<DateTime>,
+//     pub method: HttpMethod,
+//     /// Data to send (query params for GET, body for POST later)
+//     pub data: Option<HashMap<String, String>>,
+//     pub status: JobStatus,
+//     /// HTTP response code if request reached server
+//     pub response_code: Option<i32>,
+//     /// Error message if request failed before response
+//     pub last_error: Option<String>,
+//     pub attempts: u32,
+//     pub max_attempts: u32,
+// }
 
 #[derive(Debug, Deserialize)]
 pub struct User {
     email: String,
     password: String,
     cookie: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Question {
+    index: i32,
+    question: String,
+    answer: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AttendanceLink {
+    link: String,
+    email: String,
+    questions: Vec<Question>,
+    done: bool,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Attendance {
+    time: String,
+    links: Vec<AttendanceLink>,
 }
