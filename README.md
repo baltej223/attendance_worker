@@ -18,7 +18,8 @@
 - There will be another field for time input, like: `Enter time:`, enter in `HH:MM` format (in 24 hours format).
 - Then writting the actual question into the field, enter the question id in it. (How to find the question Id? Check : [this](./#finding-question-id) ).
 - if everything is done correct, then the frontend should look like this:
-<img width="1918" height="1090" alt="image" src="https://github.com/user-attachments/assets/d1f5abca-0985-48e4-992a-d8ebd2032eb9" />
+![Uploading image.png…]()
+
 
 
 
