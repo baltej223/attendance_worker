@@ -44,3 +44,5 @@ chmod +x setup.sh
 - And it will start working like that.
 
 - For any help or suggestions: feel free to contact me, through github issues, or through linkdin/`https://baltej.me/`
+
+I made it, just so that i can sleep peacefully, when it marks my attendance for me :)
