@@ -18,6 +18,8 @@
 - There will be another field for time input, like: `Enter time:`, enter in `HH:MM` format.
 - Then writting the actual question into the field, enter the question id in it. (How to find the question Id? Check : [this](./#finding-question-id) ).
 - if everything is done correct, then the frontend should look like this:
+<img width="1918" height="1090" alt="image" src="https://github.com/user-attachments/assets/5578616e-230d-4ddb-855c-6681f731dc8d" />
+
 
 ## Rust Worker
 
