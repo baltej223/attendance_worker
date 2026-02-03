@@ -15,7 +15,7 @@
 - There is an `.env.example` file in frontend dir, add your mongoURI in it, and then run the frontend, it will setup your database.
 - Once you login, then there will be an option to enter the google form url.
 - if the google form url looks like `https://docs.google.com/forms/u/0/d/e/<form-id>/viewform` then only enter `https://docs.google.com/forms/u/0/d/e/<form-id>/`, in the `Enter your link:` input field.
-- There will be another field for time input, like: `Enter time:`, enter in `HH:MM` format.
+- There will be another field for time input, like: `Enter time:`, enter in `HH:MM` format (in 24 hours format).
 - Then writting the actual question into the field, enter the question id in it. (How to find the question Id? Check : [this](./#finding-question-id) ).
 - if everything is done correct, then the frontend should look like this:
 <img width="1918" height="1090" alt="image" src="https://github.com/user-attachments/assets/1aee5483-82bb-4c31-86b2-fbb8755f400f" />
