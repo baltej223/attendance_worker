@@ -33,7 +33,6 @@ async fn main() -> Result<(), ErrHandler> {
     dotenv().ok();
 
     let attendances = database::get_current_attendances().await?;
-    println!("{}", attendances.len());
 
     for atten in attendances {
         let attendance_links = atten.links;
@@ -41,6 +40,8 @@ async fn main() -> Result<(), ErrHandler> {
             if !time::compare_day(link_.day.clone()) {
                 continue;
             }
+            let current_time = time::get_current_time_hhmm();
+            println!("Current time is : {current_time}");
             let mut headers = HashMap::new();
             headers.insert("User-Agent".to_string(), "Firefox".to_string());
             let mut req_struc = request::RequestStruct {
@@ -54,11 +55,11 @@ async fn main() -> Result<(), ErrHandler> {
             let fbzx_token = scrape::extract_fbzx(&output.body)
                 .ok_or("FBZX token not found in the damm html")
                 .unwrap();
-            println!("fbzx token is {}", fbzx_token);
+            // println!("fbzx token is {}", fbzx_token);
             let response = google::submit_google_form(link_, fbzx_token).await?;
             println!(
-                "response from google submit: \nstatus code:{}\nbody:{}",
-                response.response_code, response.body
+                "response from google submit: \nstatus code:{}\n",
+                response.response_code
             );
         }
     }

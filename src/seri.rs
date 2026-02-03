@@ -46,7 +46,6 @@ pub struct User {
 
 #[derive(Debug, Deserialize)]
 pub struct Question {
-    pub index: i32,
     pub question: String,
     pub answer: String,
 }

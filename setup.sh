@@ -2,26 +2,35 @@
 set -e
 
 # -------- CONFIG --------
-PROJECT_DIR="$HOME/attendance_bot"
 BINARY_NAME="attendance_bot"
-RUN_SCRIPT="$PROJECT_DIR/run.sh"
-LOG_FILE="$PROJECT_DIR/cron.log"
-LOCK_FILE="/tmp/attendance_bot.lock"
 # ------------------------
 
+# Resolve project directory from THIS script location
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+RUN_SCRIPT="$PROJECT_DIR/run.sh"
+LOG_FILE="$PROJECT_DIR/cron.log"
+
 cd "$PROJECT_DIR"
+
+echo "Building project in $PROJECT_DIR"
 cargo build --release
 
+# Create run.sh
 cat > "$RUN_SCRIPT" <<EOF
 #!/bin/bash
 set -e
-cd "$PROJECT_DIR"
+
+PROJECT_DIR="\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
+cd "\$PROJECT_DIR"
+
 ./target/release/$BINARY_NAME
 EOF
 
 chmod +x "$RUN_SCRIPT"
 
-CRON_JOB="* * * * * flock -n $LOCK_FILE $RUN_SCRIPT >> $LOG_FILE 2>&1"
+# Cron: start a NEW worker every minute, regardless of others
+CRON_JOB="* * * * * $RUN_SCRIPT >> $LOG_FILE 2>&1"
 
 (
   crontab -l 2>/dev/null || true
@@ -29,5 +38,5 @@ CRON_JOB="* * * * * flock -n $LOCK_FILE $RUN_SCRIPT >> $LOG_FILE 2>&1"
 ) | crontab -
 
 echo "Setup complete."
-echo "Binary will run every minute (first run in ~60 seconds)."
+echo "A new worker will start every minute (no locking)."
 echo "Logs: $LOG_FILE"
