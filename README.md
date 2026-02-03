@@ -18,12 +18,12 @@
 - There will be another field for time input, like: `Enter time:`, enter in `HH:MM` format.
 - Then writting the actual question into the field, enter the question id in it. (How to find the question Id? Check : [this](./#finding-question-id) ).
 - if everything is done correct, then the frontend should look like this:
-<img width="1918" height="1090" alt="image" src="https://github.com/user-attachments/assets/5578616e-230d-4ddb-855c-6681f731dc8d" />
+<img width="1918" height="1090" alt="image" src="https://github.com/user-attachments/assets/1aee5483-82bb-4c31-86b2-fbb8755f400f" />
 
 
 ## Rust Worker
 
-- Make sure rust in installed.
+- Make sure rust is installed.
 - then in the root dir, make a new `.env` file, like this:
 
 ```
@@ -38,6 +38,6 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-- And it will be start working.
+- And it will start working like that.
 
-- For any help or suggestions: feel free to contact me, through github issues, or through `https://baltej.me/`
+- For any help or suggestions: feel free to contact me, through github issues, or through linkdin/`https://baltej.me/`
