@@ -1,6 +1,5 @@
 // use mongodb::bson::{DateTime, oid::ObjectId};
 use serde::{Deserialize, Serialize};
-// use std::collections::HashMap;
 //
 // #[derive(Debug, Serialize, Deserialize)]
 // pub enum HttpMethod {
@@ -40,28 +39,28 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
 pub struct User {
-    email: String,
-    password: String,
-    cookie: String,
+    pub email: String,
+    pub password: String,
+    pub cookie: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Question {
-    index: i32,
-    question: String,
-    answer: String,
+    pub index: i32,
+    pub question: String,
+    pub answer: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct AttendanceLink {
-    link: String,
-    email: String,
-    questions: Vec<Question>,
-    done: bool,
+    pub link: String,
+    pub email: String,
+    pub questions: Vec<Question>,
+    pub done: bool,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Attendance {
-    time: String,
-    links: Vec<AttendanceLink>,
+    pub time: String,
+    pub links: Vec<AttendanceLink>,
 }

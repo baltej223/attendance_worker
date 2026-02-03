@@ -11,3 +11,4 @@ serde = { version = "1", features = ["derive"] }
 futures-util = "0.3"
 dotenvy = "0.15"
 chrono = "0.4"
+scraper = "0.25.0"

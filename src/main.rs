@@ -1,10 +1,12 @@
+use std::collections::HashMap;
+
 #[allow(unused_imports)]
 use dotenvy::dotenv;
 
-use crate::seri::Attendance;
-// use reqwest::Client;
-
 mod database;
+mod google;
+mod request;
+mod scrape;
 mod seri;
 mod time;
 
@@ -30,32 +32,32 @@ impl From<mongodb::error::Error> for ErrHandler {
 async fn main() -> Result<(), ErrHandler> {
     dotenv().ok();
 
-    // let client = Client::new();
-    //
-    // let response = client
-    //     .get("https://httpbin.org/get")
-    //     .header("User-Agent", "rust-client")
-    //     .send()
-    //     .await?;
-    //
-    // let body = response.text().await?;
-    // println!("{}", body);
-    // database::connect().await?;
-
-    // let users: Vec<seri::User> = database::fetch_users().await.unwrap();
-    // for user in users {
-    //     println!("{:?}", user);
-    // }
-
-    // let (time, _): (std::time::Duration, std::time::SystemTime) = time::get_time();
-    // println!("{:?}", time);
-
     let attendances = database::get_current_attendances().await?;
     println!("{}", attendances.len());
 
     for atten in attendances {
-        println!("nrje");
-        println!("{:?}", atten);
+        let attendance_links = atten.links;
+        for link_ in attendance_links {
+            let mut headers = HashMap::new();
+            headers.insert("User-Agent".to_string(), "Firefox".to_string());
+            let mut req_struc = request::RequestStruct {
+                url: link_.link.clone(),
+                headers,
+            };
+            // Now add the /viewform in the end, and send the get request. request
+            req_struc.url.push_str("/viewform");
+            let output = request::send_request(req_struc).await?;
+            // println!("Get form: {}", output.body);
+            let fbzx_token = scrape::extract_fbzx(&output.body)
+                .ok_or("FBZX token not found in the damm html")
+                .unwrap();
+            println!("fbzx token is {}", fbzx_token);
+            let response = google::submit_google_form(link_, fbzx_token).await?;
+            println!(
+                "response from google submit: \nstatus code:{}\nbody:{}",
+                response.response_code, response.body
+            );
+        }
     }
 
     Ok(())
