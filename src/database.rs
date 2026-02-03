@@ -31,8 +31,8 @@ pub async fn get_current_attendances() -> Result<Vec<crate::seri::Attendance>, m
     let db = connect().await?;
     let collection = db.collection::<crate::seri::Attendance>("attendances");
 
-    // let current_time = String::from("12:40");
-    let current_time = crate::time::get_current_time_hhmm();
+    let current_time = String::from("3:30");
+    // let current_time = crate::time::get_current_time_hhmm();
 
     let filter = doc! {
         "time": &current_time

@@ -38,6 +38,9 @@ async fn main() -> Result<(), ErrHandler> {
     for atten in attendances {
         let attendance_links = atten.links;
         for link_ in attendance_links {
+            if !time::compare_day(link_.day.clone()) {
+                continue;
+            }
             let mut headers = HashMap::new();
             headers.insert("User-Agent".to_string(), "Firefox".to_string());
             let mut req_struc = request::RequestStruct {

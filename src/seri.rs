@@ -54,6 +54,7 @@ pub struct Question {
 #[derive(Debug, Deserialize)]
 pub struct AttendanceLink {
     pub link: String,
+    pub day: String,
     pub email: String,
     pub questions: Vec<Question>,
     pub done: bool,
