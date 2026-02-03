@@ -69,19 +69,18 @@ async fn main() -> Result<(), ErrHandler> {
                 let attendance = db.collection::<crate::seri::Attendance>("attendances");
 
                 let filter = doc! {
-                    "time": &link_.time,
+                    "time": &atten.time,
                     "done": false
                 };
 
                 let update = doc! {
                     "$set": {
                         "done": true,
-                        "completed_at": DateTime::now()
                     }
                 };
 
-            let result = attendance.update_one(filter, update, None).await?;
-
+                let result = attendance.update_one(filter, update, None).await?;
+            }
         }
     }
 
