@@ -1,7 +1,10 @@
+use mongodb::bson::doc;
 use std::collections::HashMap;
 
 #[allow(unused_imports)]
 use dotenvy::dotenv;
+
+use crate::seri::Attendance;
 
 mod database;
 mod google;
@@ -61,6 +64,24 @@ async fn main() -> Result<(), ErrHandler> {
                 "response from google submit: \nstatus code:{}\n",
                 response.response_code
             );
+            if response.response_code == 200 {
+                let db = database::connect().await?;
+                let attendance = db.collection::<crate::seri::Attendance>("attendances");
+
+                let filter = doc! {
+                    "time": &link_.time,
+                    "done": false
+                };
+
+                let update = doc! {
+                    "$set": {
+                        "done": true,
+                        "completed_at": DateTime::now()
+                    }
+                };
+
+            let result = attendance.update_one(filter, update, None).await?;
+
         }
     }
 

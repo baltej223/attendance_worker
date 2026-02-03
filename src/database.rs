@@ -7,31 +7,15 @@ pub async fn connect() -> Result<Database, mongodb::error::Error> {
     let client = Client::with_uri_str(mongo_uri).await?;
     let db_name = env::var("DATABASE_NAME").expect("The DATABASE_NAME environment var not found!");
     let db = client.database(&db_name);
-    println!("Mongo ready");
+    // println!("Mongo ready");
     Ok(db)
 }
-
-// pub async fn fetch_users() -> Result<Vec<User>, mongodb::error::Error> {
-//     let db = connect().await?;
-//
-//     let collection: Collection<User> = db.collection("users");
-//
-//     let mut cursor = collection.find(None, None).await?;
-//     let mut users: Vec<User> = Vec::new();
-//     while let Some(user) = cursor.try_next().await? {
-//         users.push(user);
-//     }
-//
-//     Ok(users)
-// }
-//
 
 pub async fn get_current_attendances() -> Result<Vec<crate::seri::Attendance>, mongodb::error::Error>
 {
     let db = connect().await?;
     let collection = db.collection::<crate::seri::Attendance>("attendances");
 
-    // let current_time = ;
     let current_time = crate::time::get_current_time_hhmm();
     let filter = doc! {
         "time": &current_time

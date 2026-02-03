@@ -1,3 +1,4 @@
 .env
 /target
 cron.log
+attendance_bot
